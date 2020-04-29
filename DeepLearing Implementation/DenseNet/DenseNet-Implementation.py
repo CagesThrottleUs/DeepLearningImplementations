@@ -22,16 +22,16 @@ def AddCommonLayers(x):
 def DenseBlockGenerator(x, total_size):
     for i in range(total_size):
         connection = x
-        x = AddCommonLayers(x)
         x = layers.Conv2D(filters=4 * k, kernel_size = (1,1))(x)
         x = AddCommonLayers(x)
         x = layers.Conv2D(filters=k, kernel_size=(3,3), padding='same')(x)
+        x = AddCommonLayers(x)
         x = layers.concatenate([connection, x], axis=3) # Important learning here for keras.models all layers should be of keras.layers
     return x
 
 def TransitionBlockGenerator(x):
-    x = AddCommonLayers(x)
     x = layers.Conv2D(math.floor(theta * x.shape[3]), kernel_size=(1,1))(x)
+    x = AddCommonLayers(x)
     x = layers.AveragePooling2D(pool_size=(2,2), strides=(2,2))(x)
     return x
 
